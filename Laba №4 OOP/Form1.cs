@@ -20,18 +20,35 @@ namespace Laba__4_OOP
         public Form1()
         {
             InitializeComponent();
-            storage = new Storage(100);
+            storage = new Storage(150);
             bitmap = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             G = Graphics.FromImage(bitmap);
             pictureBox1.Image = bitmap;
         }
 
-        private void unselectedAll()
+        private void unselect()
         {
             for (int i = 0; i < storage.getsize(); i++)
             {
                 if (storage.circle[i] != null)
                     storage.circle[i].select = false;
+            }
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control == true)
+                ctrlPress = true;
+            if (e.KeyCode == Keys.Delete)
+            {
+                for (int i = 0; i < storage.getsize(); i++)
+                {
+                    if (storage.circle[i] != null && storage.circle[i].select == true)
+                    {
+                        storage.deleteCCircle(i);
+                    }
+                }
+                this.Invalidate();
             }
         }
 
@@ -43,24 +60,35 @@ namespace Laba__4_OOP
                 {
                     if(storage.circle[i] != null)
                     {
-                        CCircle current = storage.circle[i];
-                        if(storage.circle[i].CSelect(e.X, e.Y))
+                        if (storage.circle[i].CConnect(e.X, e.Y) == true)
                         {
-                            if(!ctrlPress)
+                            if (ctrlPress == false)
                             {
-                                unselectedAll();
+                                unselect();
                             }
-                            current.select = (current.select ? false : true);
+                            if (storage.circle[i].select == false)
+                            {
+                                storage.circle[i].select = true;
+                            }
+                            else
+                            {
+                                storage.circle[i].select = false;
+                            }         
                             this.Invalidate();
                             return;
                         }
                     }
                 }
-                unselectedAll();
-                CCircle newCircle = new CCircle(e.X, e.Y);
-                storage.addCCircle(newCircle);
+                unselect();
+                storage.addCCircle(new CCircle(e.X, e.Y));
                 this.Invalidate();
             }
+        }
+
+
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            ctrlPress = false;
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
@@ -72,29 +100,7 @@ namespace Laba__4_OOP
                     storage.circle[i].DrawCircle(G);
             }
             pictureBox1.Image = bitmap;
-        }
-
-        private void Form1_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Control)
-                ctrlPress = true;
-            if(e.KeyCode == Keys.Delete)
-            {
-                for(int i = 0; i < storage.getsize(); i++)
-                {
-                    if(storage.circle[i] != null && storage.circle[i].select)
-                    {
-                        storage.deleteCCircle(i);
-                    }
-                }
-                this.Invalidate();
-            }
-        }
-
-        private void Form1_KeyUp(object sender, KeyEventArgs e)
-        {
-            ctrlPress = false;
-        }
+        }   
     }
 }
 

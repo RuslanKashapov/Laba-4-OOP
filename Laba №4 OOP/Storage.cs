@@ -8,8 +8,8 @@ namespace Laba__4_OOP
 {
     public class Storage
     {
-        public int count;
-        public int size;
+        protected int count;
+        protected int size;
         public CCircle[] circle;
 
         public Storage(int size)
@@ -36,25 +36,6 @@ namespace Laba__4_OOP
             }
 
         }
-
-        public CCircle getCCircle(int i)
-        {
-            return circle[i];
-        }
-
-        public void increaseSize(int newsize)
-        {
-            CCircle[] NewCCircle = new CCircle[size + newsize];
-            for (int i = 0; i < size + newsize; i++)
-                NewCCircle[i] = null;
-
-            for (int i = 0; i < size; i++)
-                if (circle[i] != null)
-                    NewCCircle[i] = circle[i];
-            circle = NewCCircle;
-            size += newsize;
-        }
-
         public void deleteCCircle(int i)
         {
             if (circle[i] != null)

@@ -12,33 +12,38 @@ namespace Laba__4_OOP
 {
     public class CCircle
     {
-        public int x = 0;
-        public int y = 0;
-        public static int radius = 20;
-        public bool select = false;
+        protected int x = 0;
+        protected int y = 0;
+        protected static int radius = 25;
+        public bool select = true;
         Pen greenPen;
         Pen redPen;
 
         public CCircle(int x, int y)
         {
-            greenPen = new Pen(Color.Green);
-            greenPen.Width = 3;
-            redPen = new Pen(Color.Red);
-            redPen.Width = 3;
+            greenPen = new Pen(Color.Green, 3);
+            redPen = new Pen(Color.Red, 3);
             this.x = x;
             this.y = y;
         }
 
-        public bool CSelect(int x, int y)
-        {
-            if (Math.Pow(this.x - x, 2) + Math.Pow(this.y - y, 2) <= radius * radius)
+        public bool CConnect(int x, int y)
+        {  
+            if (Math.Pow(this.x - x, 2) + Math.Pow(this.y - y, 2) <= Math.Pow(radius, 2))
                 return true;
             else
                 return false;
         }
         public void DrawCircle(Graphics G)
         {
-            G.DrawEllipse(select ? redPen : greenPen, (x - radius), (y - radius), 2 * radius, 2 * radius);
+            if(this.select == true)
+            {
+                G.DrawEllipse(redPen, (x - radius), (y - radius), 2 * radius, 2 * radius);
+            }
+            else
+            {
+                G.DrawEllipse(greenPen, (x - radius), (y - radius), 2 * radius, 2 * radius);
+            }
         }
     }
 }
